@@ -1,0 +1,25 @@
+[DEFAULT]
+cert_file = /etc/swift/cert.crt
+key_file = /etc/swift/cert.key
+bind_port = 8080
+workers = 8
+user = swift
+
+[pipeline:main]
+pipeline = healthcheck cache auth proxy-server
+
+[proxy-server]
+use = egg:swift#proxy
+allow_account_management = true
+
+[filter:auth]
+use = egg:swift#auth
+ssl = true
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache
+memcache_servers = <%= cc_swift_proxy_storage_ips %>:11211
+

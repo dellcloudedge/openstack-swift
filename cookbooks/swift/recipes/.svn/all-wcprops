@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/CloudSolutions/!svn/ver/283/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes
+END
+disks.rb
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/CloudSolutions/!svn/ver/278/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/disks.rb
+END
+rsync.rb
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/CloudSolutions/!svn/ver/280/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/rsync.rb
+END
+test.rb
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/CloudSolutions/!svn/ver/202/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/test.rb
+END
+proxy.rb
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/CloudSolutions/!svn/ver/280/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/proxy.rb
+END
+auth.rb
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/CloudSolutions/!svn/ver/211/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/auth.rb
+END
+storage.rb
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/CloudSolutions/!svn/ver/280/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/storage.rb
+END
+default.rb
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/CloudSolutions/!svn/ver/211/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/default.rb
+END
+ring-compute.rb
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/CloudSolutions/!svn/ver/283/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/recipes/ring-compute.rb
+END

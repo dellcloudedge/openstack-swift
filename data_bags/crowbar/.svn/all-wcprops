@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/CloudSolutions/!svn/ver/278/trunk/crowbar/change-image/dell/barclamps/swift/chef/data_bags/crowbar
+END
+bc-default-swift.schema
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svn/CloudSolutions/!svn/ver/265/trunk/crowbar/change-image/dell/barclamps/swift/chef/data_bags/crowbar/bc-default-swift.schema
+END
+bc-default-swift.json
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/CloudSolutions/!svn/ver/278/trunk/crowbar/change-image/dell/barclamps/swift/chef/data_bags/crowbar/bc-default-swift.json
+END

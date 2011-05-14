@@ -1,0 +1,12 @@
+
+[account-server]
+devices = /srv/<%= @server_num %>/node
+mount_check = false
+bind_port = 60<%= @server_num %>2
+user = <%= node[:cloudfiles][:user] %> 
+
+[account-replicator]
+
+[account-auditor]
+
+[account-reaper]

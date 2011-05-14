@@ -1,0 +1,38 @@
+
+{
+  "id": "bc-default-swift",
+  "description": "The default proposal for swift",
+  "attributes": {
+    "swift": {
+	  "cluster_hash": "fa8bea159b55bd7e",
+	  "cluster_admin_pw": "swauth",
+	  "replicas": 1,
+	  "partitions": 18,
+	  "min_part_hours": 1,
+	  "user": "swift",
+	  "group": "swift", 	  
+	  "debug": true,
+	  "admin_ip_expr": "node[\"crowbar\"][\"network\"][\"eth0\"][\"address\"]",
+	  "storage_ip_expr": "node[\"crowbar\"][\"network\"][\"eth0\"][\"address\"]",	  
+	  "disk_enum_expr": "node[\"crowbar\"][\"disks\"]",
+	  "disk_test_expr": "v[\"usage\"] == 'Storage'"  	  
+    }	
+  },
+  "deployment": {
+    "swift": {
+      "crowbar-revision": 0,
+      "elements": {},
+      "element_order": [
+        [ "swift-storage", "swift-proxy"],
+		[ "swift-ring-compute"]
+      ],
+      "config": {
+        "environment": "swift-config-base",
+        "mode": "full",
+        "transitions": false,
+        "transition_list": []
+      }
+    }
+  }
+}
+

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/CloudSolutions/!svn/ver/159/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/memcached/templates/default
+END
+memcached.default.erb
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/CloudSolutions/!svn/ver/159/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/memcached/templates/default/memcached.default.erb
+END
+memcached.conf.erb
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/CloudSolutions/!svn/ver/159/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/memcached/templates/default/memcached.conf.erb
+END
+sv-memcached-log-run.erb
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/CloudSolutions/!svn/ver/159/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/memcached/templates/default/sv-memcached-log-run.erb
+END
+sv-memcached-run.erb
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/CloudSolutions/!svn/ver/159/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/memcached/templates/default/sv-memcached-run.erb
+END

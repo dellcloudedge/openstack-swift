@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/CloudSolutions/!svn/ver/278/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/files/default
+END
+default-rsync
+K 25
+svn:wc:ra_dav:version-url
+V 129
+/svn/CloudSolutions/!svn/ver/211/trunk/crowbar/change-image/dell/barclamps/swift/chef/cookbooks/swift/files/default/default-rsync
+END
