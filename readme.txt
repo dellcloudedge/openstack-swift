@@ -20,6 +20,21 @@ The following node roles are definied in this cookbook:
 default[:swift][:admin_ip_expr] = "node[:ipaddress]" 
 default[:swift][:storage_ip_expr] = "node[:ipaddress]"
 
+
 Instructs the recipes to look at the ipaddress attribute set on the node for use for both the admin and storage networks. In environments where more copmlex address allocation is present, these expressions can be modified (even to function calls).
+
+
+as a more complex example:
+
+# expression to find a hash of possible disks to be used.
+default[:swift][:disk_enum_expr]= 'node[:block_device]'
+# expression accepting a k,v pair for evaluation. if expression returns true, then the disk will be used.
+# by default, use any sdX or hdX that is not the first one (which will hold the OS).
+default[:swift][:disk_test_expr]= 'k =~/sd[^a]/ or k=~/hd[^a]/'      
+
+The first attribute provides a source for a list of possible disks to use. In this case, it's the ohai disk list. The second attribute is a test against the found disk - if the expression is true, the disk is ''claimed'' by swift (partitioned and formatted). The comment describes the sample expression. 
+
+
 Look in the attributes\default.rb for the full set of expressions provided.
 Look in data_bags/crowbar/bc-default-swift.json for some additional examples
+
