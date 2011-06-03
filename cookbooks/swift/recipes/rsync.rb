@@ -16,7 +16,7 @@
 # Author: andi abes
 #
 
-storage_ip = Evaluator.get_ip_by_type(node,:storage_ip_expr)
+storage_ip = Swift::Evaluator.get_ip_by_type(node,:storage_ip_expr)
 template "/etc/rsyncd.conf" do
   source "rsyncd.conf.erb"
   variables({ 

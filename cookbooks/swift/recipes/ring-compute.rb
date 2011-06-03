@@ -46,22 +46,41 @@ disks_o= []
 target_nodes=[]
 zone_round_robin =1
 replicas = node[:swift][:replicas]
+zones = node[:swift][:zones]
+disk_assign_expr = node[:swift][:disk_zone_assign_expr]
+hash = node[:swift][:cluster_hash]
 
+log ("cluster config: replicas:#{replicas} zones:#{zones} hash:#{hash}")
 nodes.each { |node|    
-  storage_ip = Evaluator.get_ip_by_type(node, :storage_ip_expr)
+  storage_ip = Swift::Evaluator.get_ip_by_type(node, :storage_ip_expr)
   target_nodes << storage_ip
-  Chef::Log.info "Looking at node: #{storage_ip}" 
+  log ("Looking at node: #{storage_ip}") {level :debug} 
   disks=node[:swift][:devs] 
   next if disks.nil?
   disks.each {|disk|
-    d = {:ip => storage_ip, :dev_name=>disk[:name], :zone=>zone_round_robin, :weight=>100, :port => 6000}
-    disks_o << d
-     (d = d.dup) [:port] = 6001
-    disks_c << d
-     (d = d.dup)[:port] = 6002
-    disks_a << d 
+    z_o, w_o = Swift::Evaluator.eval_with_params(disk_assign_expr, node(), :ring=> "object", :disk=>disk)    
+    z_c,w_c = Swift::Evaluator.eval_with_params(disk_assign_expr, node(), :ring=> "container", :disk=>disk)
+    z_a,w_a = Swift::Evaluator.eval_with_params(disk_assign_expr, node(), :ring=> "account", :disk=>disk)
+    
+    log("obj: #{z_o}/#{w_o} container: #{z_c}/#{w_c} account: #{z_a}/#{w_a}. count: #{$DISK_CNT}") {level :debug}
+    d = {:ip => storage_ip, :dev_name=>disk[:name], :port => 6000}
+    if z_o
+      d[:port] = 6000; d[:zone]=z_o ; d[:weight]=w_o
+      disks_o << d
+    end
+    d = d.dup
+    if z_c
+      d[:port] = 6001; d[:zone]=z_c ; d[:weight]=w_c
+    disks_c << d   
+    end      
+    d = d.dup     
+    if z_a
+       d[:port] = 6002; d[:zone]=z_a ; d[:weight]=w_a
+      disks_a << d  
+    end
+       
+    
   }
-  zone_round_robin = (zone_round_robin + 1) % replicas 
 }
 
 replicas = node[:swift][:replicas]
@@ -91,7 +110,7 @@ swift_ringfile "object.builder" do
 end
 
 
-Chef::Log.info "nodes to notify: #{target_nodes.join ' '}"
+log ("nodes to notify: #{target_nodes.join ' '}") {level :debug}
 target_nodes.each {|t|
   execute "push account ring-to #{t}" do
     command "rsync account.ring.gz #{node[:swift][:user]}@#{t}::ring"

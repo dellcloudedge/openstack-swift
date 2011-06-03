@@ -18,7 +18,7 @@
 
 package "xfsprogs"
 
-Chef::Log.info("locating disks using #{node[:swift][:disk_enum_expr]} test: #{node[:swift][:disk_test_expr]}")
+log("locating disks using #{node[:swift][:disk_enum_expr]} test: #{node[:swift][:disk_test_expr]}") {level :debug}
 to_use_disks = {}
 all_disks = eval(node[:swift][:disk_enum_expr])
 all_disks.each { |k,v|
@@ -26,15 +26,20 @@ all_disks.each { |k,v|
   to_use_disks[k]=v if eval(node[:swift][:disk_test_expr])  
 }
 
-Chef::Log.info("will use these disks: #{to_use_disks.keys.join(':')}")
+log("will use these disks: #{to_use_disks.keys.join(':')}") {level :debug}
 
 node[:swift][:devs] = []
 to_use_disks.each { |k,v| 
 
-  target_suffix=k + "1"
-  target_dev = "/dev/#{target_suffix}"
+  target_suffix= k + "1" # by default, will use format first partition.
+  target_dev = "/dev/#{k}"
+  target_dev_part = "/dev/#{target_suffix}"
 
-  next if !File.exists?(target_dev)
+  # protect against OS's that confuse ohai. if the device isnt there.. don't 'try to use it.
+  if File.exists?(target_dev) == false
+    log ("device: #{target_dev} doesn't seem to exist. ignoring") {level :warn }
+    next
+  end
   
   swift_disk "/dev/#{k}" do
     part [{ :type => "xfs", :size => :remaining} ]

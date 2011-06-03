@@ -17,6 +17,13 @@
 #
 
 ##
+# This LWRP will read the current state of a current ring, by executing 
+# swift-ring-builder and parsing its output. It would then compare the 
+# desired set of disks to the disks present.
+# It currently does not change parameters (zone assignment or weight).
+# to achieve that, you'd have to remove and readd the disk.
+
+##
 # some internal data structs to hold ring info read from existing files
 class RingInfo
   attr_accessor :partitions, :replicas, :zones, :device_num, :devices, :min_part_hours
@@ -155,6 +162,7 @@ def compute_deltas
   } if cur
     
   Chef::Log.info("disks, to add #{@to_add.length} , to remove: #{@to_rem.length}" ) 
+  Chef::Log.debug("disks, to add #{@to_add.join(";")} , to remove: #{@to_rem.join(";")}" )
   
 end
 

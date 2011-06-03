@@ -25,7 +25,7 @@ include_recipe 'swift::rsync'
   package pkg
 end
 
-storage_ip = Evaluator.get_ip_by_type(node,:storage_ip_expr)
+storage_ip = Swift::Evaluator.get_ip_by_type(node,:storage_ip_expr)
 
 %w{account-server object-server container-server}.each do |service|
   template "/etc/swift/#{service}.conf" do
@@ -48,8 +48,8 @@ end
 env_filter = " AND swift_config_environment:#{node[:swift][:config][:environment]}"
 compute_nodes = search(:node, "roles:swift-ring-compute#{env_filter}")
 if (!compute_nodes.nil? and compute_nodes.length > 0 )
-  compute_node_addr  = Evaluator.get_ip_by_type(compute_nodes[0],:storage_ip_expr)
-  Chef::Log.info("ring compute found on: #{compute_nodes[0][:fqdn]} using: #{compute_node_addr}")  
+  compute_node_addr  = Swift::Evaluator.get_ip_by_type(compute_nodes[0],:storage_ip_expr)
+  log("ring compute found on: #{compute_nodes[0][:fqdn]} using: #{compute_node_addr}") {level :debug}  
   %w{container account object}.each { |ring| 
     execute "pull #{ring} ring" do
       command "rsync #{node[:swift][:user]}@#{compute_node_addr}::ring #{ring}.ring.gz"
@@ -58,8 +58,11 @@ if (!compute_nodes.nil? and compute_nodes.length > 0 )
   }
 end
 
+svcs = %w{swift-object swift-object-auditor swift-object-replicator swift-object-updater} 
+svcs = svcs + %w{swift-container swift-container-auditor swift-container-replicator swift-container-updater}
+svcs = svcs + %w{swift-account swift-account-reaper swift-account-auditor swift-account-replicator}
 
-%w{ swift-account swift-object swift-container}.each { |x| 
+svcs.each { |x| 
   service x do
     action [:enable, :start]
   end

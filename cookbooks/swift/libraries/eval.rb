@@ -16,27 +16,36 @@
 # Author: andi abes
 #
 
-class Evaluator
-  
-  def initialize(node)
-    @b = binding    
+require 'chef'
+
+class Swift
+  class Evaluator
+    
+    def initialize(node)
+      @b = binding    
+    end
+    
+    def eval_with_context(str)
+      eval(str,@b)
+    end
+    
+    def self.eval_with_params(str,node,params)
+      b = binding
+      b.eval(str)
+    end
+    
+    def log_eval_vars()
+      eval("Chef::Log.info('locals:'+local_variables.join(':') + '\nglobals:'+global_variables.join(':'))")
+    end
+    
+    
+    def self.get_ip_by_type(node, type)
+      ip_location = node[:swift][type]
+      e = Evaluator.new(node)
+      ip = e.eval_with_context(ip_location)
+      Chef::Log.info("Looking at #{ip_location} for #{type} IP addr. Got: #{ip}")
+      ip
+    end
+    
   end
-  
-  def eval_with_context(str)
-    eval(str,@b)
-  end
-  
-  def log_eval_vars()
-  	eval("Chef::Log.info('locals:'+local_variables.join(':') + '\nglobals:'+global_variables.join(':'))")
-  end
-  
-  
-  def self.get_ip_by_type(node, type)
-    ip_location = node[:swift][type]
-    e = Evaluator.new(node)
-    ip = e.eval_with_context(ip_location)
-    Chef::Log.info("Looking at #{ip_location} for #{type} IP addr. Got: #{ip}")
-    ip
-  end
-  
 end
