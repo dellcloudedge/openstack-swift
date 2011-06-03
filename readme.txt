@@ -22,4 +22,4 @@ default[:swift][:storage_ip_expr] = "node[:ipaddress]"
 
 Instructs the recipes to look at the ipaddress attribute set on the node for use for both the admin and storage networks. In environments where more copmlex address allocation is present, these expressions can be modified (even to function calls).
 Look in the attributes\default.rb for the full set of expressions provided.
-
+Look in data_bags/crowbar/bc-default-swift.json for some additional examples
