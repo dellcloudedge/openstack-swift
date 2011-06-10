@@ -80,3 +80,10 @@ end
 service "swift-proxy" do
   action [:enable, :start]
 end
+
+### 
+# let the monitoring tools know what services should be running on this node.
+node[:swift][:monitor] = {}
+node[:swift][:monitor][:svcs] = ["swift-proxy", "memcached" ]
+node[:swift][:monitor][:ports] = {:proxy =>8080}
+

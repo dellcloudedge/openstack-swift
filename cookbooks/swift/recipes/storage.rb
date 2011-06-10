@@ -52,19 +52,25 @@ if (!compute_nodes.nil? and compute_nodes.length > 0 )
   log("ring compute found on: #{compute_nodes[0][:fqdn]} using: #{compute_node_addr}") {level :debug}  
   %w{container account object}.each { |ring| 
     execute "pull #{ring} ring" do
-      command "rsync #{node[:swift][:user]}@#{compute_node_addr}::ring #{ring}.ring.gz"
+      command "rsync #{node[:swift][:user]}@#{compute_node_addr}::ring/#{ring}.ring.gz ."
       cwd "/etc/swift"
     end
   }
+  
+  svcs = %w{swift-object swift-object-auditor swift-object-replicator swift-object-updater} 
+  svcs = svcs + %w{swift-container swift-container-auditor swift-container-replicator swift-container-updater}
+  svcs = svcs + %w{swift-account swift-account-reaper swift-account-auditor swift-account-replicator}
+  
+  svcs.each { |x| 
+    service x do
+      action [:enable, :start]
+    end
+  }
+  
+  ### 
+  # let the monitoring tools know what services should be running on this node.
+  node[:swift][:monitor] = {}
+  node[:swift][:monitor][:svcs] = svcs
+  node[:swift][:monitor][:ports] = {:object =>6000, :container =>6001, :account =>6002}
+  
 end
-
-svcs = %w{swift-object swift-object-auditor swift-object-replicator swift-object-updater} 
-svcs = svcs + %w{swift-container swift-container-auditor swift-container-replicator swift-container-updater}
-svcs = svcs + %w{swift-account swift-account-reaper swift-account-auditor swift-account-replicator}
-
-svcs.each { |x| 
-  service x do
-    action [:enable, :start]
-  end
-}
-
