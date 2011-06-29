@@ -48,7 +48,7 @@ to_use_disks.each { |k,v|
   
   
   execute "make xfs filesystem on #{k}" do
-    command "mkfs.xfs -i size=1024 #{target_dev}"
+    command "mkfs.xfs -f -i size=1024 #{target_dev}"
     ## test if the FS is already an XFS file system.
     not_if "xfs_admin -l #{target_dev}"
   end

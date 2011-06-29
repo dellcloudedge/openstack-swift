@@ -86,4 +86,4 @@ end
 node[:swift][:monitor] = {}
 node[:swift][:monitor][:svcs] = ["swift-proxy", "memcached" ]
 node[:swift][:monitor][:ports] = {:proxy =>8080}
-
+node.save

@@ -44,6 +44,10 @@ storage_ip = Swift::Evaluator.get_ip_by_type(node,:storage_ip_expr)
 end
 
 
+svcs = %w{swift-object swift-object-auditor swift-object-replicator swift-object-updater} 
+svcs = svcs + %w{swift-container swift-container-auditor swift-container-replicator swift-container-updater}
+svcs = svcs + %w{swift-account swift-account-reaper swift-account-auditor swift-account-replicator}
+
 ## make sure to fetch ring files from the ring compute node
 env_filter = " AND swift_config_environment:#{node[:swift][:config][:environment]}"
 compute_nodes = search(:node, "roles:swift-ring-compute#{env_filter}")
@@ -56,21 +60,18 @@ if (!compute_nodes.nil? and compute_nodes.length > 0 )
       cwd "/etc/swift"
     end
   }
-  
-  svcs = %w{swift-object swift-object-auditor swift-object-replicator swift-object-updater} 
-  svcs = svcs + %w{swift-container swift-container-auditor swift-container-replicator swift-container-updater}
-  svcs = svcs + %w{swift-account swift-account-reaper swift-account-auditor swift-account-replicator}
-  
+    
   svcs.each { |x| 
     service x do
       action [:enable, :start]
     end
   }
-  
-  ### 
-  # let the monitoring tools know what services should be running on this node.
-  node[:swift][:monitor] = {}
-  node[:swift][:monitor][:svcs] = svcs
-  node[:swift][:monitor][:ports] = {:object =>6000, :container =>6001, :account =>6002}
-  
 end
+  
+  
+### 
+# let the monitoring tools know what services should be running on this node.
+node[:swift][:monitor] = {}
+node[:swift][:monitor][:svcs] = svcs
+node[:swift][:monitor][:ports] = {:object =>6000, :container =>6001, :account =>6002}
+node.save
